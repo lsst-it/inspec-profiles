@@ -1,6 +1,6 @@
 control "atarchiver_mounts" do
   title "atarchiver NFS mounts"
-  only_if { command('hostname').stdout =~ /^atarchiver.cp.lsst.org/ }
+  only_if { sys_info.fqdn == 'atarchiver.cp.lsst.org' }
 
   describe mount("/net/lsstdata") do
     its(:options) { should include "rw" }

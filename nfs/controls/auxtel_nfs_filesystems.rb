@@ -1,7 +1,7 @@
 control "auxtel_nfs_filesystems" do
   title "nfs1 NFS filesystems"
 
-  only_if { command('hostname').stdout =~ /nfs1.cp.lsst.org/ }
+  only_if { sys_info.fqdn == 'nfs1.cp.lsst.org' }
 
   TERABYTE = 1000 * 1000 * 1000
   describe filesystem("/data/project") do
