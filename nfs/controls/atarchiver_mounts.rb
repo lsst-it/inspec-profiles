@@ -8,10 +8,12 @@ control "atarchiver_mounts" do
   end
 
   describe mount("/net/project") do
-    it { should_not be_mounted }
+    its(:options) { should include "rw" }
+    its(:type) { should eq 'nfs4' }
   end
 
   describe mount("/net/scratch") do
-    it { should_not be_mounted }
+    its(:options) { should include "rw" }
+    its(:type) { should eq 'nfs4' }
   end
 end
