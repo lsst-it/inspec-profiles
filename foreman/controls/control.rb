@@ -40,4 +40,6 @@ control 'foreman_r10k' do
   describe file('/root/.ssh/id_rsa.pub') do
     its(:content) { should match(/foreman.#{sys_info.domain}/) }
   end
+
+  # TODO: test for smee configuration
 end
