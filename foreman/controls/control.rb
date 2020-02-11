@@ -28,3 +28,11 @@ control 'foreman_virsh' do
     end
   end
 end
+
+control 'foreman_r10k' do
+  only_if { command('id').stdout.match(/root/) }
+
+  describe file('/root/.ssh/id_rsa.pub') do
+    its(:content) { should match(/foreman.#{sys_info.domain}/) }
+  end
+end
