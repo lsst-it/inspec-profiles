@@ -1,0 +1,7 @@
+---
+lockfile_version: 1
+depends:
+- name: baseline
+  resolved_source:
+    path: "/home/adrien/lsst/spikes/inspec-profiles/baseline"
+  version_constraints: []
