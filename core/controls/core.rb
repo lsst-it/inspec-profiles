@@ -3,7 +3,7 @@ control 'summit-core-network' do
 
   domain = 'cp.lsst.org'.freeze
 
-  %w[core1 core2 core3].map { |shortname| "#{shortname}.#{domain}" }.each do |fqdn|
+  %w[core1 core2].map { |shortname| "#{shortname}.#{domain}" }.each do |fqdn|
     describe host(fqdn) do
       it { should be_resolvable }
       it { should be_reachable }
