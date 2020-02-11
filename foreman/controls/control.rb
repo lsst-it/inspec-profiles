@@ -32,6 +32,11 @@ end
 control 'foreman_r10k' do
   only_if { command('id').stdout.match(/root/) }
 
+  describe file('/usr/bin/r10k') do
+    it { should be_symlink }
+    its(:link_path) { should eq '/opt/puppetlabs/puppet/bin/r10k' }
+  end
+
   describe file('/root/.ssh/id_rsa.pub') do
     its(:content) { should match(/foreman.#{sys_info.domain}/) }
   end
