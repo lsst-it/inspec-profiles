@@ -16,7 +16,7 @@ control 'bdc-core-network' do
 
   domain = 'cp.lsst.org'.freeze
 
-  pending "BDC provisioning"
+  only_if { false }
 
   %w[core1 core2 core3].map { |shortname| "#{shortname}.#{domain}" }.each do |fqdn|
     describe host(fqdn) do
