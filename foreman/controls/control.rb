@@ -1,4 +1,4 @@
-control 'foreman_proxy' do
+control 'foreman_services' do
   describe service('foreman-proxy') do
     it { should be_running }
     it { should be_enabled }
