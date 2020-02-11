@@ -1,4 +1,4 @@
-control 'sssd' do
+control 'sss' do
   title "SSSD is configured and running"
 
   # `sssctl` requires root access
@@ -16,10 +16,12 @@ control 'sssd' do
   describe command('/sbin/sssctl domain-status -o LSST.CLOUD') do
     its(:exit_status) { should eq 0 }
     its(:stdout) { should match(/Online status: Online/) }
+    its(:stderr) { should be_empty }
   end
 
   describe command('/sbin/sssctl domain-status -a LSST.CLOUD') do
     its(:exit_status) { should eq 0 }
     its(:stdout) { should match(/ipa\d.#{sys_info.domain}/) }
+    its(:stderr) { should be_empty }
   end
 end
