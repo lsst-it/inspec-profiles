@@ -26,8 +26,8 @@ control 'bdc-core-network' do
   end
 end
 
-control 'core-hypervisor' do
-  title "Core node hypervisor"
+control 'hypervisor_fs' do
+  title "Hypervisor filesystem"
 
   describe service('libvirtd') do
     it { should be_running }
@@ -56,6 +56,54 @@ control 'core-hypervisor' do
     its(:device) { should eq "/dev/mapper/data-vms" }
     its(:type) { should eq 'xfs' }
   end
+
+  describe file("/vm") do
+    its(:type) { should eq :directory }
+    its(:owner) { should eq 'root' }
+    its(:group) { should eq 'root' }
+    its(:mode) { should eq 0o1777 }
+  end
 end
 
-include_controls 'baseline'
+control 'hypervisor_polkit' do
+  only_if { command('id').stdout.match(/root/) }
+
+  describe file('/etc/polkit-1/rules.d/80-libvirt.rules') do
+    it { should exist }
+    its(:content) { should match(/libvirt/) }
+  end
+
+  describe file('/etc/libvirt/libvirtd.conf') do
+    its(:content) { should match(/^access_drivers = \[ "polkit" \]/) }
+  end
+
+  describe user('foreman') do
+    it { should exist }
+    its(:groups) { should include('libvirt') }
+  end
+
+  describe file('/root/.ssh/authorized_keys') do
+    its(:mode) { should eq 0o0600 }
+    its(:owner) { should eq 'root' }
+    its(:group) { should eq 'root' }
+    its(:content) { should match(/foreman/) }
+  end
+end
+
+control 'hypervisor_virsh' do
+  only_if { command('id').stdout.match(/root/) }
+
+  describe command('virsh pool-dumpxml default') do
+    its(:stdout) { should match(%r{<path>/vm</path>}) }
+    its(:stderr) { should be_empty }
+  end
+
+  describe command('virsh pool-list --type dir --details --autostart') do
+    its(:stdout) { should match(/default\s+running\s+yes/) }
+    its(:stderr) { should be_empty }
+  end
+end
+
+include_controls 'baseline' do
+  skip_control 'sss'
+end
