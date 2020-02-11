@@ -39,11 +39,6 @@ control 'core-hypervisor' do
     it { should_not be_enabled }
   end
 
-  describe service('sssd') do
-    it { should be_running }
-    it { should be_enabled }
-  end
-
   describe filesystem("/") do
     gigabyte = 1000 * 1000
     its(:percent_free) { should be >= 50.0 }
