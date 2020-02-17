@@ -14,9 +14,7 @@ end
 control 'bdc-core-network' do
   title "BDC core network"
 
-  domain = 'cp.lsst.org'.freeze
-
-  only_if { false }
+  domain = 'ls.lsst.org'.freeze
 
   %w[core1 core2 core3].map { |shortname| "#{shortname}.#{domain}" }.each do |fqdn|
     describe host(fqdn) do
