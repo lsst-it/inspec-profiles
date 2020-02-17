@@ -35,6 +35,7 @@ control 'foreman_virsh' do
       its(:exit_status) { should eq 0 }
       its(:stdout) { should match(/ipa#{offset}.#{sys_info.domain}/) }
       its(:stdout) { should match(/dns#{offset}.#{sys_info.domain}/) }
+      its(:stderr) { should be_empty }
     end
   end
 end
