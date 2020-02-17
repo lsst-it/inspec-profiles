@@ -13,6 +13,16 @@ control 'foreman_services' do
     it { should be_running }
     it { should be_enabled }
   end
+
+  describe service('dhcpd') do
+    it { should be_running }
+    it { should be_enabled }
+  end
+
+  describe service('named') do
+    it { should_not be_running }
+    it { should_not be_enabled }
+  end
 end
 
 control 'foreman_virsh' do
