@@ -1,4 +1,17 @@
 control 'puppet_agent' do
+
+  describe package('puppet-agent') do
+    it { should be_installed }
+  end
+
+  describe package('puppet6-release') do
+    it { should be_installed }
+  end
+
+  describe package('puppet5-release') do
+    it { should_not be_installed }
+  end
+
   describe service('puppet') do
     it { should be_running }
     it { should be_enabled }
