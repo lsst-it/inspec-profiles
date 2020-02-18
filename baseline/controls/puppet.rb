@@ -20,4 +20,8 @@ control 'puppet_agent' do
   describe ini('/etc/puppetlabs/puppet/puppet.conf') do
     its('agent.server') { should eq "foreman.#{sys_info.domain}" }
   end
+
+  describe command('puppet config print --section agent noop') do
+    its(:stdout) { should_not match(/true/) }
+  end
 end
